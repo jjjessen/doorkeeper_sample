@@ -92,7 +92,7 @@ Rails.application.configure do
     config.hosts << /.*#{URI.parse(gitpod_workspace_url).host}/
   end
 
-  config.action_mailer.delivery_method = :letter_opener
+  config.action_mailer.delivery_method = :letter_opener_web
   config.active_job.queue_adapter = :sidekiq
 
   # Raises error for missing translations
@@ -107,4 +107,8 @@ Rails.application.configure do
   # ✅ YOUR APPLICATION'S CONFIGURATION
   # If you need to customize your application's configuration, this is the place to do it. This helps avoid merge
   # conflicts in the future when Rails or Bullet Train update their own default settings.
+
+  LetterOpenerWeb.configure do |config|
+    config.letters_location = Rails.root.join('letter-opener', 'web')
+  end
 end
