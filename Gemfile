@@ -6,7 +6,7 @@
 source "https://rubygems.org"
 git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 
-ruby "3.2.0"
+ruby(File.read(File.expand_path(".ruby-version", __dir__)))
 
 # Bundle edge Rails instead: gem "rails", github: "rails/rails", branch: "main"
 gem "rails", "~> 7.0.0"
@@ -58,7 +58,15 @@ gem "chronic"
 
 group :development, :test do
   # See https://guides.rubyonrails.org/debugging_rails_applications.html#debugging-with-the-debug-gem
-  gem "debug", platforms: %i[mri mingw x64_mingw]
+  # TODO: Remove version restriction once Ruby 3.2.2 is released.
+  # See: https://github.com/ruby/debug/issues/898#issuecomment-1451804022
+  gem "debug", "1.8.0", platforms: %i[mri mingw x64_mingw]
+
+  # A gem for generating test coverage results in your browser.
+  gem "simplecov", require: false
+
+  # Generate test objects.
+  gem "factory_bot_rails"
 end
 
 group :development do
@@ -135,9 +143,6 @@ group :test do
   # Interact with emails during testing.
   gem "capybara-email"
 
-  # Generate test objects.
-  gem "factory_bot_rails", group: :development
-
   # Write system tests by pointing and clicking in your browser.
   gem "magic_test"
 
@@ -164,8 +169,8 @@ group :production do
   gem "aws-sdk-s3", require: false
 end
 
-# TODO Have to specify this dependency here until our changes are in the original package.
-gem "active_hash", github: "bullet-train-co/active_hash"
+# Use Ruby hashes as readonly datasources for ActiveRecord-like models.
+gem "active_hash"
 
 # A great debugger.
 gem "pry"

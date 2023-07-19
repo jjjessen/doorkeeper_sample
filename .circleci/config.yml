@@ -1,7 +1,7 @@
 version: 2.1
 orbs:
   ruby: circleci/ruby@0.1.2
-  browser-tools: circleci/browser-tools@1.1
+  browser-tools: circleci/browser-tools@1.4.1
 aliases:
   - &restore_bundler_cache
       name: Restore Bundler cache
@@ -26,7 +26,7 @@ aliases:
       paths:
         - node_modules
   - &ruby_node_browsers_docker_image
-      - image: cimg/ruby:3.2.0-browsers
+      - image: cimg/ruby:3.2.2-browsers
         environment:
           PGHOST: localhost
           PGUSER: plain
@@ -163,6 +163,9 @@ jobs:
       - run:
           name: 'Run Super Scaffolding Test'
           command: bundle exec rails test test/system/super_scaffolding_test.rb
+      - run:
+          name: 'Run Super Scaffolding Partial Test'
+          command: bundle exec rails test test/system/super_scaffolding_partial_test.rb
 
   'System Tests with Cuprite':
     docker:
@@ -214,7 +217,7 @@ jobs:
       - <<: *postgres_docker_image
       - image: cimg/redis:6.2.6
     executor: ruby/default
-    parallelism: 16
+    parallelism: 4
 
     steps:
       - browser-tools/install-chrome

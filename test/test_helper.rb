@@ -1,6 +1,11 @@
 ENV["RAILS_ENV"] ||= "test"
 require_relative "../config/environment"
 require "rails/test_help"
+require "simplecov"
+
+# Open coverage/index.html in your browser after
+# running your tests for test coverage results.
+SimpleCov.start "rails"
 
 # We've started loading seeds by default to try to reduce any duplication of effort trying to get the test
 # environment to look the same as the actual development and production environments. This means a consolidation
@@ -21,4 +26,8 @@ ActiveSupport::TestCase.class_eval do
   fixtures :all
 
   # Add more helper methods to be used by all tests here...
+end
+
+class ActiveSupport::TestCase
+  include FactoryBot::Syntax::Methods
 end

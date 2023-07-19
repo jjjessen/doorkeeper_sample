@@ -30,7 +30,9 @@ class ApplicationPlatformSystemTest < ApplicationSystemTestCase
       click_on "Sign Up"
 
       if billing_enabled?
-        complete_pricing_page
+        unless freemium_enabled?
+          complete_pricing_page
+        end
       end
 
       # we should now be on an onboarding step.
@@ -49,10 +51,10 @@ class ApplicationPlatformSystemTest < ApplicationSystemTestCase
       click_on "Provision Platform Application"
       assert page.has_content?("Platform Application was successfully created.")
 
+      @team = Team.find_by(name: "The Testing Team")
+
       # Ensure that Platform Application is present in the Memberships list.
-      within_team_menu_for(display_details) do
-        click_on "Team Members"
-      end
+      visit account_team_memberships_path(@team)
       within_current_memberships_table do
         assert page.has_content?("Test Platform Application")
       end
@@ -64,15 +66,12 @@ class ApplicationPlatformSystemTest < ApplicationSystemTestCase
       end
       accept_alert { click_on("Delete") }
 
-      within_team_menu_for(display_details) do
-        click_on "Team Members"
-      end
+      visit account_team_memberships_path(@team)
       within_current_memberships_table do
         refute page.has_content?("Test Platform Application")
       end
       # The tombstones partial won't be rendered if there aren't any tombstoned memberships.
-      # TODO: This eats up a lot of time, look for a better way to check for this.
-      refute page.has_css?("tbody[data-model='Membership'][data-scope='tombstones']")
+      assert_no_selector "h2", text: "Former Team Members"
 
       # The Membership was archived but not destroyed.
       test_app_membership = Membership.find_by(user_first_name: "Test Platform Application")
