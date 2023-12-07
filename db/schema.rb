@@ -10,9 +10,17 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2022_12_31_003438) do
+ActiveRecord::Schema[7.1].define(version: 2023_12_07_100610) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "account_onboarding_invitation_lists", force: :cascade do |t|
+    t.bigint "team_id", null: false
+    t.jsonb "invitations"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["team_id"], name: "index_account_onboarding_invitation_lists_on_team_id"
+  end
 
   create_table "action_mailbox_inbound_emails", force: :cascade do |t|
     t.integer "status", default: 0, null: false
@@ -61,6 +69,35 @@ ActiveRecord::Schema[7.0].define(version: 2022_12_31_003438) do
     t.index ["blob_id", "variation_digest"], name: "index_active_storage_variant_records_uniqueness", unique: true
   end
 
+  create_table "addresses", force: :cascade do |t|
+    t.string "addressable_type", null: false
+    t.bigint "addressable_id", null: false
+    t.string "address_one"
+    t.string "address_two"
+    t.string "city"
+    t.integer "region_id"
+    t.string "region_name"
+    t.integer "country_id"
+    t.string "postal_code"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["addressable_type", "addressable_id"], name: "index_addresses_on_addressable"
+  end
+
+  create_table "agreements", force: :cascade do |t|
+    t.bigint "team_id", null: false
+    t.string "reference"
+    t.bigint "buyer_id"
+    t.bigint "seller_id"
+    t.string "status"
+    t.string "category"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["buyer_id"], name: "index_agreements_on_buyer_id"
+    t.index ["seller_id"], name: "index_agreements_on_seller_id"
+    t.index ["team_id"], name: "index_agreements_on_team_id"
+  end
+
   create_table "integrations_stripe_installations", force: :cascade do |t|
     t.bigint "team_id", null: false
     t.bigint "oauth_stripe_account_id", null: false
@@ -78,6 +115,8 @@ ActiveRecord::Schema[7.0].define(version: 2022_12_31_003438) do
     t.datetime "created_at", precision: nil, null: false
     t.datetime "updated_at", precision: nil, null: false
     t.integer "team_id"
+    t.bigint "invitation_list_id"
+    t.index ["invitation_list_id"], name: "index_invitations_on_invitation_list_id"
     t.index ["team_id"], name: "index_invitations_on_team_id"
   end
 
@@ -100,22 +139,6 @@ ActiveRecord::Schema[7.0].define(version: 2022_12_31_003438) do
     t.index ["platform_agent_of_id"], name: "index_memberships_on_platform_agent_of_id"
     t.index ["team_id"], name: "index_memberships_on_team_id"
     t.index ["user_id"], name: "index_memberships_on_user_id"
-  end
-
-  create_table "memberships_reassignments_assignments", force: :cascade do |t|
-    t.bigint "membership_id", null: false
-    t.bigint "scaffolding_completely_concrete_tangible_things_reassignments_i"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["membership_id"], name: "index_memberships_reassignments_assignments_on_membership_id"
-    t.index ["scaffolding_completely_concrete_tangible_things_reassignments_i"], name: "index_assignments_on_tangible_things_reassignment_id"
-  end
-
-  create_table "memberships_reassignments_scaffolding_completely_concrete_tangi", force: :cascade do |t|
-    t.bigint "membership_id", null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["membership_id"], name: "index_tangible_things_reassignments_on_membership_id"
   end
 
   create_table "oauth_access_grants", force: :cascade do |t|
@@ -182,16 +205,6 @@ ActiveRecord::Schema[7.0].define(version: 2022_12_31_003438) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["team_id"], name: "index_absolutely_abstract_creative_concepts_on_team_id"
-  end
-
-  create_table "scaffolding_absolutely_abstract_creative_concepts_collaborators", force: :cascade do |t|
-    t.bigint "creative_concept_id", null: false
-    t.bigint "membership_id", null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.jsonb "role_ids", default: []
-    t.index ["creative_concept_id"], name: "index_creative_concepts_collaborators_on_creative_concept_id"
-    t.index ["membership_id"], name: "index_creative_concepts_collaborators_on_membership_id"
   end
 
   create_table "scaffolding_completely_concrete_tangible_things", force: :cascade do |t|
@@ -338,26 +351,26 @@ ActiveRecord::Schema[7.0].define(version: 2022_12_31_003438) do
     t.index ["team_id"], name: "index_webhooks_outgoing_events_on_team_id"
   end
 
+  add_foreign_key "account_onboarding_invitation_lists", "teams"
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
+  add_foreign_key "agreements", "memberships", column: "buyer_id"
+  add_foreign_key "agreements", "memberships", column: "seller_id"
+  add_foreign_key "agreements", "teams"
   add_foreign_key "integrations_stripe_installations", "oauth_stripe_accounts"
   add_foreign_key "integrations_stripe_installations", "teams"
+  add_foreign_key "invitations", "account_onboarding_invitation_lists", column: "invitation_list_id"
   add_foreign_key "invitations", "teams"
   add_foreign_key "memberships", "invitations"
   add_foreign_key "memberships", "memberships", column: "added_by_id"
   add_foreign_key "memberships", "oauth_applications", column: "platform_agent_of_id"
   add_foreign_key "memberships", "teams"
   add_foreign_key "memberships", "users"
-  add_foreign_key "memberships_reassignments_assignments", "memberships"
-  add_foreign_key "memberships_reassignments_assignments", "memberships_reassignments_scaffolding_completely_concrete_tangi", column: "scaffolding_completely_concrete_tangible_things_reassignments_i"
-  add_foreign_key "memberships_reassignments_scaffolding_completely_concrete_tangi", "memberships"
   add_foreign_key "oauth_access_grants", "oauth_applications", column: "application_id"
   add_foreign_key "oauth_access_tokens", "oauth_applications", column: "application_id"
   add_foreign_key "oauth_applications", "teams"
   add_foreign_key "oauth_stripe_accounts", "users"
   add_foreign_key "scaffolding_absolutely_abstract_creative_concepts", "teams"
-  add_foreign_key "scaffolding_absolutely_abstract_creative_concepts_collaborators", "memberships"
-  add_foreign_key "scaffolding_absolutely_abstract_creative_concepts_collaborators", "scaffolding_absolutely_abstract_creative_concepts", column: "creative_concept_id"
   add_foreign_key "scaffolding_completely_concrete_tangible_things", "scaffolding_absolutely_abstract_creative_concepts", column: "absolutely_abstract_creative_concept_id"
   add_foreign_key "scaffolding_completely_concrete_tangible_things_assignments", "memberships"
   add_foreign_key "scaffolding_completely_concrete_tangible_things_assignments", "scaffolding_completely_concrete_tangible_things", column: "tangible_thing_id"
