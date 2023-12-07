@@ -84,19 +84,7 @@ ActiveRecord::Schema[7.1].define(version: 2023_12_07_100610) do
     t.index ["addressable_type", "addressable_id"], name: "index_addresses_on_addressable"
   end
 
-  create_table "agreements", force: :cascade do |t|
-    t.bigint "team_id", null: false
-    t.string "reference"
-    t.bigint "buyer_id"
-    t.bigint "seller_id"
-    t.string "status"
-    t.string "category"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["buyer_id"], name: "index_agreements_on_buyer_id"
-    t.index ["seller_id"], name: "index_agreements_on_seller_id"
-    t.index ["team_id"], name: "index_agreements_on_team_id"
-  end
+
 
   create_table "integrations_stripe_installations", force: :cascade do |t|
     t.bigint "team_id", null: false
@@ -354,9 +342,6 @@ ActiveRecord::Schema[7.1].define(version: 2023_12_07_100610) do
   add_foreign_key "account_onboarding_invitation_lists", "teams"
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
-  add_foreign_key "agreements", "memberships", column: "buyer_id"
-  add_foreign_key "agreements", "memberships", column: "seller_id"
-  add_foreign_key "agreements", "teams"
   add_foreign_key "integrations_stripe_installations", "oauth_stripe_accounts"
   add_foreign_key "integrations_stripe_installations", "teams"
   add_foreign_key "invitations", "account_onboarding_invitation_lists", column: "invitation_list_id"
