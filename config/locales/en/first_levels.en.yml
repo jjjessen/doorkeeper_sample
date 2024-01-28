@@ -1,0 +1,91 @@
+en:
+  first_levels: &first_levels
+    label: &label First Levels
+    breadcrumbs:
+      label: *label
+    navigation:
+      label: *label
+      icon: fal fa-puzzle-piece ti ti-gift
+    buttons: &buttons
+      new: Add New First Level
+      create: Create First Level
+      edit: Edit First Level
+      update: Update First Level
+      destroy: Remove First Level
+      shorthand:
+        edit: Edit
+        destroy: Delete
+      confirmations:
+        # TODO customize for your use-case.
+        destroy: Are you sure you want to remove %{first_level_name}? This will also remove any child resources and can't be undone.
+    first_level:
+      buttons: *buttons
+    fields: &fields
+      id:
+        heading: First Level ID
+      team_id:
+        heading: Team ID
+      data:
+        _: &data Data
+        label: *data
+        heading: *data
+      # 🚅 super scaffolding will insert new fields above this line.
+      created_at:
+        _: &created_at Added
+        label: *created_at
+        heading: *created_at
+      updated_at:
+        _: &updated_at Updated
+        label: *updated_at
+        heading: *updated_at
+    api:
+      collection_actions: "Collection Actions for First Levels"
+      index: "List First Levels"
+      create: "Add a New First Level"
+      member_actions: "Actions for an Individual First Level"
+      show: "Retrieve a First Level"
+      update: "Update a First Level"
+      destroy: "Delete a First Level"
+      fields: *fields
+    index:
+      section: "%{teams_possessive} First Levels"
+      contexts:
+        team:
+          header: First Levels
+          description: Below is a list of First Levels that have been added for %{team_name}.
+          description_empty: No First Levels have been added for %{team_name}.
+      fields: *fields
+      buttons: *buttons
+    show:
+      section: "%{first_level_name}"
+      header: First Level Details
+      description: Below are the details we have for %{first_level_name}.
+      manage_description: You'll also find options for updating these details or removing %{first_level_name} from %{team_name} entirely.
+      fields: *fields
+      buttons: *buttons
+    form: &form
+      buttons: *buttons
+      fields: *fields
+    new:
+      section: "New First Level for %{team_name}"
+      header: New First Level Details
+      description: Please provide the details of the new First Level you'd like to add to %{team_name}.
+      form: *form
+    edit:
+      section: "%{first_level_name}"
+      header: Edit First Level Details
+      description: You can update the details or settings for %{first_level_name} below.
+      form: *form
+    notifications:
+      created: First Level was successfully created.
+      updated: First Level was successfully updated.
+      destroyed: First Level was successfully destroyed.
+  account:
+    first_levels: *first_levels
+  activerecord:
+    attributes:
+      first_level:
+        data: *data
+        # 🚅 super scaffolding will insert new activerecord attributes above this line.
+        created_at: *created_at
+        updated_at: *updated_at

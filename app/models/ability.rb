@@ -1,4 +1,4 @@
-class Ability
+  class Ability
   include CanCan::Ability
   include Roles::Permit
 

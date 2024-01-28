@@ -1,0 +1,8 @@
+<% second_level ||= @second_level %>
+<% first_level ||= @first_level || second_level&.first_level %>
+<%= render 'account/first_levels/breadcrumbs', first_level: first_level %>
+<%= render 'account/shared/breadcrumb', label: t('.label'), url: [:account, first_level, :second_levels] %>
+<% if second_level&.persisted? %>
+  <%= render 'account/shared/breadcrumb', label: second_level.label_string, url: [:account, second_level] %>
+<% end %>
+<%= render 'account/shared/breadcrumbs/actions', only_for: 'second_levels' %>

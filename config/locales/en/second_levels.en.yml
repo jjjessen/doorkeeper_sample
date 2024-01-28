@@ -1,0 +1,91 @@
+en:
+  second_levels: &second_levels
+    label: &label Second Levels
+    breadcrumbs:
+      label: *label
+    navigation:
+      label: *label
+      icon: fal fa-puzzle-piece
+    buttons: &buttons
+      new: Add New Second Level
+      create: Create Second Level
+      edit: Edit Second Level
+      update: Update Second Level
+      destroy: Remove Second Level
+      shorthand:
+        edit: Edit
+        destroy: Delete
+      confirmations:
+        # TODO customize for your use-case.
+        destroy: Are you sure you want to remove %{second_level_name}? This will also remove any child resources and can't be undone.
+    second_level:
+      buttons: *buttons
+    fields: &fields
+      id:
+        heading: Second Level ID
+      first_level_id:
+        heading: First Level ID
+      data:
+        _: &data Data
+        label: *data
+        heading: *data
+      # 🚅 super scaffolding will insert new fields above this line.
+      created_at:
+        _: &created_at Added
+        label: *created_at
+        heading: *created_at
+      updated_at:
+        _: &updated_at Updated
+        label: *updated_at
+        heading: *updated_at
+    api:
+      collection_actions: "Collection Actions for Second Levels"
+      index: "List Second Levels"
+      create: "Add a New Second Level"
+      member_actions: "Actions for an Individual Second Level"
+      show: "Retrieve a Second Level"
+      update: "Update a Second Level"
+      destroy: "Delete a Second Level"
+      fields: *fields
+    index:
+      section: "%{first_levels_possessive} Second Levels"
+      contexts:
+        first_level:
+          header: Second Levels
+          description: Below is a list of Second Levels that have been added for %{first_level_name}.
+          description_empty: No Second Levels have been added for %{first_level_name}.
+      fields: *fields
+      buttons: *buttons
+    show:
+      section: "%{second_level_name}"
+      header: Second Level Details
+      description: Below are the details we have for %{second_level_name}.
+      manage_description: You'll also find options for updating these details or removing %{second_level_name} from %{first_level_name} entirely.
+      fields: *fields
+      buttons: *buttons
+    form: &form
+      buttons: *buttons
+      fields: *fields
+    new:
+      section: "New Second Level for %{first_level_name}"
+      header: New Second Level Details
+      description: Please provide the details of the new Second Level you'd like to add to %{first_level_name}.
+      form: *form
+    edit:
+      section: "%{second_level_name}"
+      header: Edit Second Level Details
+      description: You can update the details or settings for %{second_level_name} below.
+      form: *form
+    notifications:
+      created: Second Level was successfully created.
+      updated: Second Level was successfully updated.
+      destroyed: Second Level was successfully destroyed.
+  account:
+    second_levels: *second_levels
+  activerecord:
+    attributes:
+      second_level:
+        data: *data
+        # 🚅 super scaffolding will insert new activerecord attributes above this line.
+        created_at: *created_at
+        updated_at: *updated_at

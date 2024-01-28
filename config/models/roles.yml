@@ -21,6 +21,19 @@ editor:
       - read
       - update
 
+not_admin:
+  includes:
+    - editor
+  manageable_roles:
+    - admin
+    - editor
+  models:
+    FirstLevel: read
+    Team: manage
+    Membership: manage
+    Scaffolding::AbsolutelyAbstract::CreativeConcept: manage
+    Platform::Application: manage
+
 admin:
   includes:
     - editor
@@ -28,6 +41,8 @@ admin:
     - admin
     - editor
   models:
+    SecondLevel: manage
+    FirstLevel: manage
     Team: manage
     Membership: manage
     Scaffolding::AbsolutelyAbstract::CreativeConcept: manage

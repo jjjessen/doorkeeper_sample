@@ -1,0 +1,8 @@
+<% first_level ||= @first_level %>
+<% team ||= @team || first_level&.team %>
+<%= render 'account/teams/breadcrumbs', team: team %>
+<%= render 'account/shared/breadcrumb', label: t('.label'), url: [:account, team, :first_levels] %>
+<% if first_level&.persisted? %>
+  <%= render 'account/shared/breadcrumb', label: first_level.label_string, url: [:account, first_level] %>
+<% end %>
+<%= render 'account/shared/breadcrumbs/actions', only_for: 'first_levels' %>

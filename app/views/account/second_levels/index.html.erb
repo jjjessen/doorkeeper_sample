@@ -1,0 +1,4 @@
+<%= render 'account/shared/page' do |page| %>
+  <% page.title t('.section') %>
+  <% page.body.render 'index', second_levels: @second_levels %>
+<% end %>
