@@ -18,6 +18,13 @@ services:
     command: redis-server --save 20 1 --loglevel warning
     volumes: 
       - redis:/data
+  nginx:
+    build:
+      context: ./nginx
+    ports:
+      - "443:443"
+    depends_on:
+      - web
   web:
     build: .
     tty: true
