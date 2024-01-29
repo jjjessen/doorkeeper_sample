@@ -33,6 +33,7 @@ services:
       - DATABASE_URL=postgres://postgres:postgres@db:5432/web
     volumes:
       - .:/app
+      - /app/node_modules
     ports:
       - "3000:3000"
     depends_on:

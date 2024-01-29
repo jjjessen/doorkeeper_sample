@@ -10,9 +10,6 @@ In another terminal:
 The seed files generates a user with admin role and a user with non-admin role
 Setup OAuth2 Applications. The db:seed step always deletes old data.
 
-
-
-
 # Using
 https://localhost for the app with seeded users:
 * admin@test.sphinx.dk
