@@ -112,7 +112,7 @@ Rails.application.configure do
   # If you need to customize your application's configuration, this is the place to do it. This helps avoid merge
   # conflicts in the future when Rails or Bullet Train update their own default settings.
 
-
+  config.action_controller.default_url_options = { host: 'localhost', protocol: 'https' }
   config.hosts << "web:3000"
   config.hosts << "localhost"
   LetterOpenerWeb.configure do |config|
