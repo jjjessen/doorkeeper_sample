@@ -96,7 +96,6 @@ Rails.application.configure do
   # whitelist ngrok domains.
   config.hosts << /[a-z0-9-]+\.ngrok\.io/
 
-  config.action_mailer.delivery_method = :letter_opener
   config.active_job.queue_adapter = :sidekiq
 
   # Raises error for missing translations
@@ -112,10 +111,5 @@ Rails.application.configure do
   # If you need to customize your application's configuration, this is the place to do it. This helps avoid merge
   # conflicts in the future when Rails or Bullet Train update their own default settings.
 
-  config.action_controller.default_url_options = { host: 'localhost', protocol: 'https' }
-  config.hosts << "web:3000"
-  config.hosts << "localhost"
-  LetterOpenerWeb.configure do |config|
-    config.letters_location = Rails.root.join('letter-opener', 'web')
-  end
+
 end
